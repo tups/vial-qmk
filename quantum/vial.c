@@ -526,6 +526,10 @@ static void reload_tap_dance(void) {
 #endif
 
 #ifdef TAPPING_TERM_PER_KEY
+__attribute__((weak)) uint16_t get_tapping_term_user(uint16_t keycode, keyrecord_t *record) {
+    return TAPPING_TERM;
+}
+
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 #ifdef VIAL_TAP_DANCE_ENABLE
     if (keycode >= QK_TAP_DANCE && keycode <= QK_TAP_DANCE_MAX) {
@@ -537,7 +541,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 #ifdef QMK_SETTINGS
     return qs_get_tapping_term(keycode, record);
 #else
-    return TAPPING_TERM;
+    return get_tapping_term_user(keycode, record);
 #endif
 }
 
