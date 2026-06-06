@@ -148,7 +148,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * When inactive, this layer is discarded and replaced by AltGr.
  */
 
-// #define ARSENIK_ENABLE_HRM
+#define ARSENIK_ENABLE_HRM
 /* When active, adds a Meta, Ctrl and Alt home-row-mod on respectively s/l,
  * d/k or f/j on a Qwerty keyboard. Those home-row-mods stay on those exact
  * keys regardless of the layout being used, meaning they would be on r/i, s/e
