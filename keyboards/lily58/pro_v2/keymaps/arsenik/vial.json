@@ -5,7 +5,15 @@
     "lighting": "vialrgb",
     "matrix": { "rows": 10, "cols": 6 },
     "customKeycodes": [
-        {"name": "RGB Toggle", "title": "RGB Toggle", "shortName": "RGB_TOG"}
+        {"name": "RGB Toggle", "title": "RGB Toggle", "shortName": "RGB_TOG"},
+        {"name": "OS Undo", "title": "Ctrl+Z (Win) / Cmd+Z (Mac), suit AG_TOGG", "shortName": "OS_UNDO"},
+        {"name": "OS Cut", "title": "Ctrl+X (Win) / Cmd+X (Mac), suit AG_TOGG", "shortName": "OS_CUT"},
+        {"name": "OS Copy", "title": "Ctrl+C (Win) / Cmd+C (Mac), suit AG_TOGG", "shortName": "OS_COPY"},
+        {"name": "OS Paste", "title": "Ctrl+V (Win) / Cmd+V (Mac), suit AG_TOGG", "shortName": "OS_PASTE"},
+        {"name": "OS Select All", "title": "Ctrl+A (Win) / Cmd+A (Mac), suit AG_TOGG", "shortName": "OS_ALL"},
+        {"name": "OS Save", "title": "Ctrl+S (Win) / Cmd+S (Mac), suit AG_TOGG", "shortName": "OS_SAVE"},
+        {"name": "OS New Tab", "title": "Ctrl+T (Win) / Cmd+T (Mac), suit AG_TOGG", "shortName": "OS_NTAB"},
+        {"name": "OS Toggle Win/Mac", "title": "Bascule Win/Mac (swap LAlt/LGui seulement, préserve AltGr/Lafayette)", "shortName": "MAC_TOGG"}
     ],
     "layouts": {
       "labels": [
