@@ -199,6 +199,25 @@ void keyboard_post_init_user(void) {
 
 #ifdef OLED_ENABLE
 
+#include "glcdfont.c"  // 6x8 font data (same as the oled driver's) for pixel rendering
+
+// The stock oled_write() is locked to 8px-aligned rows (SSD1306 pages), which
+// makes lines look cramped. This draws a string pixel by pixel at any (x, y),
+// allowing real line spacing. Blank pixels are written too, erasing leftovers.
+static void oled_write_at(uint8_t x, uint8_t y, const char *str) {
+    while (*str) {
+        const unsigned char *glyph = &font[(unsigned char)*str * 6];
+        for (uint8_t col = 0; col < 6; col++) {
+            uint8_t bits = pgm_read_byte(glyph + col);
+            for (uint8_t row = 0; row < 8; row++) {
+                oled_write_pixel(x + col, y + row, bits & (1 << row));
+            }
+        }
+        x += 6;
+        str++;
+    }
+}
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     if (!is_keyboard_master()) {
         return OLED_ROTATION_180; // flip display on offhand
@@ -216,46 +235,39 @@ static void render_logo(void) {
 }
 
 static void render_status(void) {
-    oled_write_P(PSTR("Lily58 Pro V2\n"), false);
-    oled_write_P(PSTR("Layer: "), false);
+    // 3 lines of 8px text with a 4px gap between them (y = 0, 12, 24).
+    // Lines are padded to 21 chars so stale pixels get erased.
+    char line[22];
 
+    oled_write_at(0, 0, "Lily58 Pro V2        ");
+
+    const char *layer_name;
     switch (get_highest_layer(layer_state)) {
-        case _base:
-            oled_write_P(PSTR("Base\n"), false);
-            break;
-        // case _lafayette:
-        //     oled_write_P(PSTR("Lafayette\n"), false);
-        //     break;
-        // case _num_row:
-        //     oled_write_P(PSTR("NumRow\n"), false);
-        //     break;
-        case _vim_nav:
-            oled_write_P(PSTR("VimNav\n"), false);
-            break;
-        case _num_nav:
-            oled_write_P(PSTR("NumNav\n"), false);
-            break;
-        // case _num_pad:
-        //     oled_write_P(PSTR("NumPad\n"), false);
-        //     break;
-        case _fun_pad:
-            oled_write_P(PSTR("FunPad\n"), false);
-            break;
-        default: {
-            char buf[8];
-            snprintf(buf, sizeof(buf), "L%02d\n", get_highest_layer(layer_state));
-            oled_write(buf, false);
-            break;
-        }
+        case _base:    layer_name = "Base";   break;
+        // case _lafayette: layer_name = "Lafayette"; break;
+        // case _num_row:   layer_name = "NumRow";    break;
+        case _vim_nav: layer_name = "VimNav"; break;
+        case _num_nav: layer_name = "NumNav"; break;
+        // case _num_pad:   layer_name = "NumPad";    break;
+        case _fun_pad: layer_name = "FunPad"; break;
+        default:       layer_name = NULL;     break;
     }
+    if (layer_name) {
+        snprintf(line, sizeof(line), "Layer: %-14s", layer_name);
+    } else {
+        snprintf(line, sizeof(line), "Layer: L%02d%-11s", get_highest_layer(layer_state), "");
+    }
+    oled_write_at(0, 12, line);
 
-    oled_write_P(PSTR("OS: "), false);
-    oled_write_P(keymap_config.swap_lalt_lgui ? PSTR("Mac\n") : PSTR("Win\n"), false);
-
-    #ifdef RGB_MATRIX_ENABLE
-    oled_write_P(PSTR("RGB: "), false);
-    oled_write_P(rgb_matrix_is_enabled() ? PSTR("ON\n") : PSTR("OFF\n"), false);
-    #endif
+    snprintf(line, sizeof(line), "OS: %-3s  RGB: %-6s",
+             keymap_config.swap_lalt_lgui ? "Mac" : "Win",
+#ifdef RGB_MATRIX_ENABLE
+             rgb_matrix_is_enabled() ? "ON" : "OFF"
+#else
+             "--"
+#endif
+    );
+    oled_write_at(0, 24, line);
 }
 
 bool oled_task_user(void) {
