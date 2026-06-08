@@ -59,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q, KC_W,  KC_E,  KC_R,  KC_T,      KC_Y, KC_U,  KC_I,    KC_O,   KC_P,    KC_INS,
         KC_ESC,  KC_A, KC_SS, KC_DD, KC_FF, KC_G,      KC_H, KC_JJ, KC_KK,   KC_LL,  KC_SCLN, KC_ENTER,
         KC_LSFT, KC_Z, KC_X,  KC_C,  KC_V,  KC_B, MAC_TOGG, XX, KC_N, KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_RSFT,
-        MO(_fun_pad), _vim_nav, KC_BSPC, LT(_num_nav, KC_SPC),    LT(_num_nav, KC_SPC), RALT_T(KC_ENT), MO(_vim_nav), MO(_fun_pad)
+        MO(_fun_pad), MO(_vim_nav), KC_BSPC, LT(_num_nav, KC_SPC),    LT(_num_nav, KC_SPC), RALT_T(KC_ENT), MO(_vim_nav), MO(_fun_pad)
     ),
 
     /*[_lafayette] = ARSENIK_LAYOUT(

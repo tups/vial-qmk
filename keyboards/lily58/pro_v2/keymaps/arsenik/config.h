@@ -127,7 +127,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
-#define ARSENIK_HRM_TAPPING_TERM 150
+#define ARSENIK_HRM_TAPPING_TERM 200
 /* This is the delay used by Arsenik for sensitive tap-holds, which include
  * home-row-mods and mod-taps using the spacebar
  */
