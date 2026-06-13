@@ -48,6 +48,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_CONNECTION_CHECK_TIMEOUT 500
 #define FORCED_SYNC_THROTTLE_MS 100
 
+/* Sync layer state to the slave half so per-layer RGB lights up on both sides */
+#define SPLIT_LAYER_STATE_ENABLE
+
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 100
 

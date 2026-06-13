@@ -195,6 +195,23 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 void keyboard_post_init_user(void) {
     rgb_matrix_enable();
 }
+
+// Per-layer solid color. Runs on BOTH halves every frame, each with its own
+// led_min/led_max range. The slave only knows the active layer because
+// SPLIT_LAYER_STATE_ENABLE (config.h) syncs layer_state across the split.
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    uint8_t r = 0, g = 0, b = 0;
+    switch (get_highest_layer(layer_state)) {
+        case _vim_nav: g = 255;          break;  // vert
+        case _num_nav: b = 255;          break;  // bleu
+        case _fun_pad: r = 255;          break;  // rouge
+        default:       return true;               // _base : garde l'animation
+    }
+    for (uint8_t i = led_min; i < led_max; i++) {
+        rgb_matrix_set_color(i, r, g, b);
+    }
+    return false;  // remplace l'effet courant tant qu'un calque est actif
+}
 #endif
 
 #ifdef OLED_ENABLE
